@@ -3,13 +3,13 @@
 //  libPhoneNumber-GeocodingParser
 //
 //  Created by Rastaar Haghi on 7/1/20.
-//  Copyright © 2020 Rastaar Haghi. All rights reserved.
+//  Copyright © 2020 Google LLC. All rights reserved.
 //
 
 #import "NBGeocoderMetadataParser.h"
 
 @implementation NBGeocoderMetadataParser {
- @private
+@private
   SQLiteDatabaseConnection *_databaseConnection;
 }
 
@@ -23,15 +23,18 @@
                        withLanguage:(NSString *)languageCode {
   NSString *fileName = completeTextFilePath;
   NSData *data = [NSData dataWithContentsOfFile:fileName];
-  NSString *myStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+  NSString *myStr = [[NSString alloc] initWithData:data
+                                          encoding:NSUTF8StringEncoding];
   NSMutableArray<NSString *> *countryCodes =
       (NSMutableArray *)[textFileName componentsSeparatedByString:@"."];
   NSString *countryCode = countryCodes[0];
-  _databaseConnection = [[SQLiteDatabaseConnection alloc] initWithCountryCode:countryCode
-                                                                 withLanguage:languageCode];
+  _databaseConnection =
+      [[SQLiteDatabaseConnection alloc] initWithCountryCode:countryCode
+                                               withLanguage:languageCode];
   @autoreleasepool {
-    // This program splits each line of the text file into the two important pieces of info:
-    // phone number prefix and the corresponding region description.
+    // This program splits each line of the text file into the two important
+    // pieces of info: phone number prefix and the corresponding region
+    // description.
     NSCharacterSet *separator = [NSCharacterSet newlineCharacterSet];
     NSArray *mArr = [myStr componentsSeparatedByCharactersInSet:separator];
     NSMutableArray<NSString *> *keyValuePair = [[NSMutableArray alloc] init];
@@ -41,7 +44,8 @@
     BOOL indexNeededFlag = YES;
     for (NSString *str in mArr) {
       @autoreleasepool {
-        // This program skips entries if they are invalid or improperly formatted.
+        // This program skips entries if they are invalid or improperly
+        // formatted.
         if (([str length] > 0) && ([str characterAtIndex:0] == '#')) {
           continue;
         }
@@ -50,9 +54,11 @@
           continue;
         }
         key = [keyValuePair[0]
-            stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            stringByTrimmingCharactersInSet:
+                [NSCharacterSet whitespaceAndNewlineCharacterSet]];
         value = [keyValuePair[1]
-            stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            stringByTrimmingCharactersInSet:
+                [NSCharacterSet whitespaceAndNewlineCharacterSet]];
         [_databaseConnection addEntryToDB:key
                           withDescription:value
                     withShouldCreateTable:indexNeededFlag
