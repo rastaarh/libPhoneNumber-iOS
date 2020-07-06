@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		942B2F3C24AD065300D4594F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 942B2F3B24AD065300D4594F /* main.m */; };
-		942B2F4424AD067D00D4594F /* SQLiteDatabaseConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 942B2F4324AD067D00D4594F /* SQLiteDatabaseConnection.m */; };
+		942B2F4424AD067D00D4594F /* NBSQLiteDatabaseConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 942B2F4324AD067D00D4594F /* NBSQLiteDatabaseConnection.m */; };
 		942B2F4724AD06A900D4594F /* NBGeocoderMetadataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 942B2F4624AD06A900D4594F /* NBGeocoderMetadataParser.m */; };
 /* End PBXBuildFile section */
 
@@ -27,8 +27,8 @@
 /* Begin PBXFileReference section */
 		942B2F3824AD065300D4594F /* libPhoneNumber-GeocodingParser */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "libPhoneNumber-GeocodingParser"; sourceTree = BUILT_PRODUCTS_DIR; };
 		942B2F3B24AD065300D4594F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		942B2F4224AD067D00D4594F /* SQLiteDatabaseConnection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQLiteDatabaseConnection.h; sourceTree = "<group>"; };
-		942B2F4324AD067D00D4594F /* SQLiteDatabaseConnection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SQLiteDatabaseConnection.m; sourceTree = "<group>"; };
+		942B2F4224AD067D00D4594F /* NBSQLiteDatabaseConnection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NBSQLiteDatabaseConnection.h; sourceTree = "<group>"; };
+		942B2F4324AD067D00D4594F /* NBSQLiteDatabaseConnection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NBSQLiteDatabaseConnection.m; sourceTree = "<group>"; };
 		942B2F4524AD06A900D4594F /* NBGeocoderMetadataParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NBGeocoderMetadataParser.h; sourceTree = "<group>"; };
 		942B2F4624AD06A900D4594F /* NBGeocoderMetadataParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NBGeocoderMetadataParser.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -64,8 +64,8 @@
 			isa = PBXGroup;
 			children = (
 				942B2F3B24AD065300D4594F /* main.m */,
-				942B2F4224AD067D00D4594F /* SQLiteDatabaseConnection.h */,
-				942B2F4324AD067D00D4594F /* SQLiteDatabaseConnection.m */,
+				942B2F4224AD067D00D4594F /* NBSQLiteDatabaseConnection.h */,
+				942B2F4324AD067D00D4594F /* NBSQLiteDatabaseConnection.m */,
 				942B2F4524AD06A900D4594F /* NBGeocoderMetadataParser.h */,
 				942B2F4624AD06A900D4594F /* NBGeocoderMetadataParser.m */,
 			);
@@ -130,7 +130,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				942B2F4724AD06A900D4594F /* NBGeocoderMetadataParser.m in Sources */,
-				942B2F4424AD067D00D4594F /* SQLiteDatabaseConnection.m in Sources */,
+				942B2F4424AD067D00D4594F /* NBSQLiteDatabaseConnection.m in Sources */,
 				942B2F3C24AD065300D4594F /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

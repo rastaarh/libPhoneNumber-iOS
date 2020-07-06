@@ -6,9 +6,9 @@
 //  Copyright © 2020 Google LLC. All rights reserved.
 //
 
-#import "SQLiteDatabaseConnection.h"
+#import "NBSQLiteDatabaseConnection.h"
 
-@implementation SQLiteDatabaseConnection {
+@implementation NBSQLiteDatabaseConnection {
 @private
   NSString *_databasePath;
   sqlite3 *_DB;
@@ -62,8 +62,7 @@ static NSString *const createIndexStatement =
           withCountryCode:(NSString *)countryCode {
   @autoreleasepool {
     int SQLCommandResults = [self createInsertStatement:phoneNumber
-                                        withDescription:description
-                                        withCountryCode:countryCode];
+                                        withDescription:description];
     if (SQLCommandResults != SQLITE_OK) {
       NSLog(@"Error when creating insert statement: %s",
             sqlite3_errstr(SQLCommandResults));
@@ -104,8 +103,7 @@ static NSString *const createIndexStatement =
 }
 
 - (int)createInsertStatement:(NSString *)phoneNumber
-             withDescription:(NSString *)description
-             withCountryCode:(NSString *)countryCode {
+             withDescription:(NSString *)description {
   int sqliteResultCode;
   @autoreleasepool {
     sqliteResultCode = [self resetInsertStatement];
@@ -113,8 +111,12 @@ static NSString *const createIndexStatement =
       NSLog(@"SQLite3 error occurred when resetting and clearing bindings in "
             @"insert statement: %s",
             sqlite3_errstr(sqliteResultCode));
+    } else {
+        sqlite3_bind_text(_insertStatement, 1, [phoneNumber UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(_insertStatement, 2, [description UTF8String], -1, SQLITE_TRANSIENT);
     }
   }
+    NSLog(@"%s", sqlite3_expanded_sql(_insertStatement));
   return sqliteResultCode;
 }
 
