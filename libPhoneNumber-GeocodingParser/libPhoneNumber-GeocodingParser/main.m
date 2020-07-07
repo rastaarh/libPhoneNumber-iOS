@@ -11,33 +11,47 @@
 
 int main(int argc, const char *argv[]) {
   @autoreleasepool {
-    NBGeocoderMetadataParser *metadataParser = [[NBGeocoderMetadataParser alloc] init];
-    NSArray *dirPaths =
-        NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documents = dirPaths[0];
-    NSString *geocodingFolder = [documents stringByAppendingFormat:@"/geocoding/"];
-    NSArray *languages = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:geocodingFolder
-                                                                             error:NULL];
+    if (argc != 3) {
+      NSLog(@"The libPhoneNumber-iOS Geocoder Parser requires two input arguments to properly "
+            @"function.");
+      NSLog(@"1. The complete folder path where the libPhoneNumber geocoding resource folder "
+            @"(found at: https://github.com/google/libphonenumber/tree/master/resources/geocoding) "
+            @"is stored on disk.");
+      NSLog(@"2. The complete directory path to the desired location to store the corresponding "
+            @"SQLite databases created.");
+      NSLog(@"Example arguments: Users/JohnDoe/Documents/geocoding   Users/JohnDoe/Desktop");
+    } else {
+      NSString *geocodingMetadataDirectory = [NSString stringWithUTF8String:argv[1]];
+      NSString *databaseDesiredLocation = [NSString stringWithUTF8String:argv[2]];
 
-    NSArray *textFilesAvailable;
-    NSString *languageFolderPath;
-    for (NSString *language in languages) {
-      languageFolderPath = [NSString stringWithFormat:@"%@%@", geocodingFolder, language];
+      NBGeocoderMetadataParser *metadataParser = [[NBGeocoderMetadataParser alloc]
+          initWithDesiredDatabaseDestination:databaseDesiredLocation];
 
-      textFilesAvailable =
-          [[NSFileManager defaultManager] contentsOfDirectoryAtPath:languageFolderPath error:NULL];
-      [textFilesAvailable enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSString *filename = (NSString *)obj;
-        NSString *extension = [[filename pathExtension] lowercaseString];
+      NSArray *languages =
+          [[NSFileManager defaultManager] contentsOfDirectoryAtPath:geocodingMetadataDirectory
+                                                              error:NULL];
+      NSArray *textFilesAvailable;
+      NSString *languageFolderPath;
+      for (NSString *language in languages) {
+        languageFolderPath =
+            [NSString stringWithFormat:@"%@/%@", geocodingMetadataDirectory, language];
+        textFilesAvailable =
+            [[NSFileManager defaultManager] contentsOfDirectoryAtPath:languageFolderPath
+                                                                error:NULL];
+        [textFilesAvailable enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+          NSString *filename = (NSString *)obj;
+          NSString *extension = [[filename pathExtension] lowercaseString];
 
-        if ([extension isEqualToString:@"txt"]) {
-          NSString *completeFilePath =
-              [NSString stringWithFormat:@"%@%@/%@", geocodingFolder, language, filename];
-          [metadataParser convertFileToSQLiteDatabase:completeFilePath
-                                         withFileName:filename
-                                         withLanguage:language];
-        }
-      }];
+          if ([extension isEqualToString:@"txt"]) {
+            NSString *completeFilePath =
+                [NSString stringWithFormat:@"%@/%@", languageFolderPath, filename];
+            NSLog(@"Current File: %@", completeFilePath);
+            [metadataParser convertFileToSQLiteDatabase:completeFilePath
+                                           withFileName:filename
+                                           withLanguage:language];
+          }
+        }];
+      }
     }
   }
 

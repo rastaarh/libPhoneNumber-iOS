@@ -8,18 +8,31 @@
 
 #import "NBGeocoderMetadataParser.h"
 
-@implementation NBGeocoderMetadataParser
+@implementation NBGeocoderMetadataParser {
+  NSString *_desiredDatabaseDestination;
+}
+
+- (instancetype)initWithDesiredDatabaseDestination:(NSString *)desiredDatabaseDestination {
+  self = [super init];
+  if (self != nil) {
+    _desiredDatabaseDestination = desiredDatabaseDestination;
+  }
+  return self;
+}
 
 - (void)convertFileToSQLiteDatabase:(NSString *)completeTextFilePath
                        withFileName:(NSString *)textFileName
                        withLanguage:(NSString *)languageCode {
   NSString *fileContentString = [[NSString alloc] initWithContentsOfFile:completeTextFilePath
-                                                    encoding:NSUTF8StringEncoding
-                                                       error:nil];
+                                                                encoding:NSUTF8StringEncoding
+                                                                   error:nil];
   NSArray<NSString *> *countryCodes = [textFileName componentsSeparatedByString:@"."];
+
   NSString *countryCode = countryCodes[0];
   NBSQLiteDatabaseConnection *databaseConnection =
-      [[NBSQLiteDatabaseConnection alloc] initWithCountryCode:countryCode language:languageCode];
+      [[NBSQLiteDatabaseConnection alloc] initWithCountryCode:countryCode
+                                                 withLanguage:languageCode
+                                       withDesiredDestination:_desiredDatabaseDestination];
 
   // This program splits each line of the text file into the two important
   // pieces of info: phone number prefix and the corresponding region

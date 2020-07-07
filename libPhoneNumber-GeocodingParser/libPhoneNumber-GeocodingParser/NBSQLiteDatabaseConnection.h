@@ -13,7 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NBSQLiteDatabaseConnection : NSObject
 
-- (instancetype)initWithCountryCode:(NSString *)countryCode language:(NSString *)language;
+- (instancetype)initWithCountryCode:(NSString *)countryCode
+                       withLanguage:(NSString *)language
+             withDesiredDestination:(NSString *)desiredDestination;
 - (void)addEntryToDB:(NSString *)phoneNumber
      withDescription:(NSString *)description
      withCountryCode:(NSString *)countryCode;

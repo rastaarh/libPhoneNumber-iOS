@@ -27,16 +27,14 @@ static NSString *const createTablePreparedStatement =
 static NSString *const createIndexStatement = @"CREATE INDEX IF NOT EXISTS nationalNumberIndex ON "
                                               @"geocodingPairs%@(NATIONALNUMBER)";
 
-- (instancetype)initWithCountryCode:(NSString *)countryCode language:(NSString *)language {
+- (instancetype)initWithCountryCode:(NSString *)countryCode
+                       withLanguage:(NSString *)language
+             withDesiredDestination:(NSString *)desiredDestination {
   self = [super init];
   if (self != nil) {
-    NSArray *directoryPath =
-        NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentDirectory = directoryPath[0];
-    NSString *databasePath =
-        [[NSString alloc] initWithString:[NSString stringWithFormat:@"%@/geocoding/%@.db",
-                                                                    documentDirectory, language]];
-
+    NSString *databasePath = [[NSString alloc]
+        initWithString:[NSString stringWithFormat:@"%@/%@.db", desiredDestination, language]];
+    NSLog(@"Database Path: %@", databasePath);
     sqlite3_open([databasePath UTF8String], &_DB);
 
     [self createTable:countryCode];
@@ -93,6 +91,7 @@ static NSString *const createIndexStatement = @"CREATE INDEX IF NOT EXISTS natio
     sqlite3_bind_text(_insertStatement, 1, [phoneNumber UTF8String], -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(_insertStatement, 2, [description UTF8String], -1, SQLITE_TRANSIENT);
   }
+  NSLog(@"Insert Statement: %s", sqlite3_expanded_sql(_insertStatement));
   return sqliteResultCode;
 }
 
