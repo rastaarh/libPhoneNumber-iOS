@@ -33,6 +33,7 @@ int main(int argc, const char *argv[]) {
       NSArray *textFilesAvailable;
       NSString *languageFolderPath;
       for (NSString *language in languages) {
+        NSLog(@"Creating SQLite database file for the language: %@", language);
         languageFolderPath =
             [NSString stringWithFormat:@"%@/%@", geocodingMetadataDirectory, language];
         textFilesAvailable =
@@ -50,6 +51,7 @@ int main(int argc, const char *argv[]) {
                                            withLanguage:language];
           }
         }];
+        NSLog(@"Created SQLite database file for the language: %@", language);
       }
     }
   }

@@ -29,6 +29,8 @@
   NSArray<NSString *> *countryCodes = [textFileName componentsSeparatedByString:@"."];
 
   NSString *countryCode = countryCodes[0];
+  NSLog(@"Creating a SQL table for the country code: %@, in the language: %@", countryCode,
+        languageCode);
   NBSQLiteDatabaseConnection *databaseConnection =
       [[NBSQLiteDatabaseConnection alloc] initWithCountryCode:countryCode
                                                  withLanguage:languageCode
