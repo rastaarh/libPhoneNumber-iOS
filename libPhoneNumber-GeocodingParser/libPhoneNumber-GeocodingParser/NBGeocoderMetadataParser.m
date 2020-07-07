@@ -34,9 +34,7 @@
                                                  withLanguage:languageCode
                                        withDesiredDestination:_desiredDatabaseDestination];
 
-  // This program splits each line of the text file into the two important
-  // pieces of info: phone number prefix and the corresponding region
-  // description.
+  // Split into phone number prefix and region description.
   NSCharacterSet *separator = [NSCharacterSet newlineCharacterSet];
   NSArray *components = [fileContentString componentsSeparatedByCharactersInSet:separator];
   NSArray<NSString *> *keyValuePair;
@@ -45,8 +43,7 @@
   BOOL indexNeededFlag = YES;
   for (NSString *str in components) {
     @autoreleasepool {
-      // This program skips entries if they are invalid or improperly
-      // formatted and if they are a comment line
+      // This program skips entries if invalid, improperly formatted, or a comment
       if (([str length] > 0) && ([str characterAtIndex:0] == '#')) {
         continue;
       }
