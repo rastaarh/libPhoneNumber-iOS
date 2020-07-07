@@ -45,7 +45,6 @@ int main(int argc, const char *argv[]) {
           if ([extension isEqualToString:@"txt"]) {
             NSString *completeFilePath =
                 [NSString stringWithFormat:@"%@/%@", languageFolderPath, filename];
-            NSLog(@"Current File: %@", completeFilePath);
             [metadataParser convertFileToSQLiteDatabase:completeFilePath
                                            withFileName:filename
                                            withLanguage:language];

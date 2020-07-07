@@ -13,6 +13,7 @@
   NSString *_databasePath;
   sqlite3 *_DB;
   sqlite3_stmt *_insertStatement;
+  int _sqliteDatabaseCode;
 }
 
 static NSString *const insertPreparedStatement = @"INSERT INTO geocodingPairs%@"
@@ -34,13 +35,18 @@ static NSString *const createIndexStatement = @"CREATE INDEX IF NOT EXISTS natio
   if (self != nil) {
     NSString *databasePath = [[NSString alloc]
         initWithString:[NSString stringWithFormat:@"%@/%@.db", desiredDestination, language]];
-    NSLog(@"Database Path: %@", databasePath);
-    sqlite3_open([databasePath UTF8String], &_DB);
-
-    [self createTable:countryCode];
-    const char *formattedPreparedStatement =
-        [[NSString stringWithFormat:insertPreparedStatement, countryCode] UTF8String];
-    sqlite3_prepare_v2(_DB, formattedPreparedStatement, -1, &_insertStatement, NULL);
+    _sqliteDatabaseCode = sqlite3_open([databasePath UTF8String], &_DB);
+      
+    if (_sqliteDatabaseCode == SQLITE_OK) {
+      [self createTable:countryCode];
+      const char *formattedPreparedStatement =
+          [[NSString stringWithFormat:insertPreparedStatement, countryCode] UTF8String];
+      sqlite3_prepare_v2(_DB, formattedPreparedStatement, -1, &_insertStatement, NULL);
+    } else {
+      NSLog(@"Cannot open database at desired location: %@. \n"
+            @"SQLite3 Error Message: %s",
+            desiredDestination, sqlite3_errstr(_sqliteDatabaseCode));
+    }
   }
   return self;
 }
@@ -48,6 +54,12 @@ static NSString *const createIndexStatement = @"CREATE INDEX IF NOT EXISTS natio
 - (void)addEntryToDB:(NSString *)phoneNumber
      withDescription:(NSString *)description
      withCountryCode:(NSString *)countryCode {
+  if (_sqliteDatabaseCode != SQLITE_OK) {
+    NSLog(@"Cannot open database. Failed to add entry. \n"
+          @"SQLite3 Error Message: %s",
+          sqlite3_errstr(_sqliteDatabaseCode));
+    return;
+  }
   int commandResults = [self createInsertStatement:phoneNumber withDescription:description];
   if (commandResults != SQLITE_OK) {
     NSLog(@"Error when creating insert statement: %s", sqlite3_errstr(commandResults));
@@ -91,7 +103,6 @@ static NSString *const createIndexStatement = @"CREATE INDEX IF NOT EXISTS natio
     sqlite3_bind_text(_insertStatement, 1, [phoneNumber UTF8String], -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(_insertStatement, 2, [description UTF8String], -1, SQLITE_TRANSIENT);
   }
-  NSLog(@"Insert Statement: %s", sqlite3_expanded_sql(_insertStatement));
   return sqliteResultCode;
 }
 
