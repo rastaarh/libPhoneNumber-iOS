@@ -43,7 +43,7 @@
   BOOL indexNeededFlag = YES;
   for (NSString *str in components) {
     @autoreleasepool {
-      // This program skips entries if invalid, improperly formatted, or a comment
+      // Skip entry if invalid, malformatted, or comment.
       if (([str length] > 0) && ([str characterAtIndex:0] == '#')) {
         continue;
       }
