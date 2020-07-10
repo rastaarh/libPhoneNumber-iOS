@@ -28,4 +28,4 @@ Please contribute to libPhoneNumber-iOS library by creating a pull request to re
 up-to-date SQLite databases produced by this program. 
 
 
-##### Visit [libphonenumber](https://github.com/google/libphonenumber) for more information or mail (rastaar@google.com)
+##### Visit [libphonenumber](https://github.com/google/libphonenumber) for more information
