@@ -57,6 +57,7 @@
           stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
       value = [keyValuePair[1]
           stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        NSLog(@"MAKING PAIR: %@, %@", key, value);
       [databaseConnection addEntryToDB:key withDescription:value withCountryCode:countryCode];
       indexNeededFlag = NO;
     }
