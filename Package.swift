@@ -34,10 +34,27 @@ let package = Package(
                 "NBPhoneNumberParsingPerfTest.m",
                 "NBPhoneNumberUtilTest.m"
             ]
-        ),
+        )
+    ]
+)
+
+let geocodingPackage = Package(
+    name: "libPhoneNumberGeocoding",
+    platforms: [
+        .macOS(.v10_10),
+        .iOS(.v8),
+        .tvOS(.v9),
+        .watchOS(.v2)
+    ],
+    products: [
+        .library(
+            name: "libPhoneNumberGeocoding",
+            targets: ["libPhoneNumberGeocoding"]
+        )
+    ],
+    targets: [
         .target(
             name: "libPhoneNumberGeocoding",
-            dependencies: ["libPhoneNumber"],
             path: "libPhoneNumberGeocoding"
         ),
         .testTarget(
@@ -47,10 +64,27 @@ let package = Package(
             sources: [
                 "NBPhoneNumberOfflineGeocoderTest.m"
             ]
-        ),
+        )
+    ]
+)
+
+let shortNumberPackage = Package(
+    name: "libPhoneNumberShortNumber",
+    platforms: [
+        .macOS(.v10_10),
+        .iOS(.v8),
+        .tvOS(.v9),
+        .watchOS(.v2)
+    ],
+    products: [
+        .library(
+            name: "libPhoneNumberShortNumber",
+            targets: ["libPhoneNumberShortNumber"]
+        )
+    ],
+    targets: [
         .target(
             name: "libPhoneNumberShortNumber",
-            dependencies: ["libPhoneNumber"],
             path: "libPhoneNumberShortNumber"
         ),
         .testTarget(
