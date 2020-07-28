@@ -19,7 +19,7 @@ let package = Package(
     targets: [
         .target(
             name: "libPhoneNumberiOS",
-            path: "libPhoneNumberiOS",
+            path: "libPhoneNumberiOS"
         ),
         .testTarget(
             name: "libPhoneNumberiOSTests",
