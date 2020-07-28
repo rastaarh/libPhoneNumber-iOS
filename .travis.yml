@@ -5,9 +5,9 @@ before_install:
 
 script:
 
-- xcodebuild test -project libPhoneNumber.xcodeproj -scheme libPhoneNumberiOSTests -destination "platform=iOS Simulator,name=iPhone 11" -sdk iphonesimulator CODE_SIGNING_REQUIRED=NO
-- xcodebuild test -project libPhoneNumber.xcodeproj -scheme libPhoneNumberGeocodingTests -destination "platform=iOS Simulator,name=iPhone 11" -sdk iphonesimulator CODE_SIGNING_REQUIRED=NO
-- xcodebuild test -project libPhoneNumber.xcodeproj -scheme libPhoneNumberShortNumberTests -destination "platform=iOS Simulator,name=iPhone 11" -sdk iphonesimulator CODE_SIGNING_REQUIRED=NO
+# - xcodebuild test -project libPhoneNumber.xcodeproj -scheme libPhoneNumberiOSTests -destination "platform=iOS Simulator,name=iPhone 11" -sdk iphonesimulator CODE_SIGNING_REQUIRED=NO
+# - xcodebuild test -project libPhoneNumber.xcodeproj -scheme libPhoneNumberGeocodingTests -destination "platform=iOS Simulator,name=iPhone 11" -sdk iphonesimulator CODE_SIGNING_REQUIRED=NO
+# - xcodebuild test -project libPhoneNumber.xcodeproj -scheme libPhoneNumberShortNumberTests -destination "platform=iOS Simulator,name=iPhone 11" -sdk iphonesimulator CODE_SIGNING_REQUIRED=NO
 - swift test -c release
 
 after_success: slather 
