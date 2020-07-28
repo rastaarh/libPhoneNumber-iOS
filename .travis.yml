@@ -6,9 +6,12 @@ before_install:
 script:
 - xcodebuild -project libPhoneNumber.xcodeproj -scheme libPhoneNumberiOSTests clean
 - xcodebuild -project libPhoneNumber.xcodeproj -scheme libPhoneNumberiOSTests -sdk iphonesimulator13.5 -configuration Debug build test
+- xctool -project libPhoneNumber.xcodeproj -scheme libPhoneNumberiOSTests run-tests -sdk iphonesimulator13.5 ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES
 
 - xcodebuild -project libPhoneNumber.xcodeproj -scheme libPhoneNumberGeocodingTests -sdk iphonesimulator13.5 -configuration Debug build test
+- xctool -project libPhoneNumber.xcodeproj -scheme libPhoneNumberGeocodingTests run-tests -sdk iphonesimulator13.5 ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES
 
 - xcodebuild -project libPhoneNumber.xcodeproj -scheme libPhoneNumberShortNumberTests -sdk iphonesimulator13.5 -configuration Debug build test
+- xctool -project libPhoneNumber.xcodeproj -scheme libPhoneNumberShortNumberTests run-tests -sdk iphonesimulator13.5 ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES
 
 after_success: slather 
