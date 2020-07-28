@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "libPhoneNumber",
+    name: "libPhoneNumberiOS",
     platforms: [
         .macOS(.v10_10),
         .iOS(.v8),
@@ -12,23 +12,19 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "libPhoneNumber",
-            targets: ["libPhoneNumber"]
+            name: "libPhoneNumberiOS",
+            targets: ["libPhoneNumberiOS"]
         )
     ],
     targets: [
         .target(
-            name: "libPhoneNumber",
-            path: "libPhoneNumber",
-            publicHeadersPath: ".",
-            cSettings: [
-                .headerSearchPath("Internal")
-            ]
+            name: "libPhoneNumberiOS",
+            path: "libPhoneNumberiOS",
         ),
         .testTarget(
-            name: "libPhoneNumberTests",
-            dependencies: ["libPhoneNumber"],
-            path: "libPhoneNumberTests",
+            name: "libPhoneNumberiOSTests",
+            dependencies: ["libPhoneNumberiOS"],
+            path: "libPhoneNumberiOSTests",
             sources: [
                 "NBAsYouTypeFormatterTest.m",
                 "NBPhoneNumberParsingPerfTest.m",
@@ -48,8 +44,8 @@ let geocodingPackage = Package(
     ],
     products: [
         .library(
-            name: "libPhoneNumber",
-            targets: ["libPhoneNumber"]
+            name: "libPhoneNumberiOS",
+            targets: ["libPhoneNumberiOS"]
         )
     ],
     targets: [
@@ -78,8 +74,8 @@ let shortNumberPackage = Package(
     ],
     products: [
         .library(
-            name: "libPhoneNumber",
-            targets: ["libPhoneNumber"]
+            name: "libPhoneNumberiOS",
+            targets: ["libPhoneNumberiOS"]
         )
     ],
     targets: [
