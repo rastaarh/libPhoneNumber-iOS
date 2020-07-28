@@ -5,8 +5,8 @@ before_install:
 
 script: 
 
--xcodebuild -project libPhoneNumber.xcodeproj -scheme libPhoneNumberiOSTests -sdk iphonesimulator10.3 -destination 'platform=iOS Simulator,OS=13.5,name=iPhone X' -configuration Debug build test
--xcodebuild -project libPhoneNumber.xcodeproj -scheme libPhoneNumberGeocodingTests -sdk iphonesimulator10.3 -destination 'platform=iOS Simulator,OS=13.5,name=iPhone X' -configuration Debug build test
--xcodebuild -project libPhoneNumber.xcodeproj -scheme libPhoneNumberShortNumberTests -sdk iphonesimulator10.3 -destination 'platform=iOS Simulator,OS=13.5,name=iPhone X' -configuration Debug build test
+-xcodebuild -project libPhoneNumber.xcodeproj -scheme libPhoneNumberiOSTests -sdk iphonesimulator -destination 'platform=iOS Simulator,OS=13.5,name=iPhone X' -configuration Debug build test
+-xcodebuild -project libPhoneNumber.xcodeproj -scheme libPhoneNumberGeocodingTests -sdk iphonesimulator -destination 'platform=iOS Simulator,OS=13.5,name=iPhone X' -configuration Debug build test
+-xcodebuild -project libPhoneNumber.xcodeproj -scheme libPhoneNumberShortNumberTests -sdk iphonesimulator -destination 'platform=iOS Simulator,OS=13.5,name=iPhone X' -configuration Debug build test
 
 after_success: slather 
