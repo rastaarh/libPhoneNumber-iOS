@@ -32,8 +32,7 @@ let package = Package(
             sources: [
                 "NBAsYouTypeFormatterTest.m",
                 "NBPhoneNumberParsingPerfTest.m",
-                "NBPhoneNumberUtilTest.m",
-                "NBShortNumberInfoTest.m"
+                "NBPhoneNumberUtilTest.m"
             ]
         )
     ]
