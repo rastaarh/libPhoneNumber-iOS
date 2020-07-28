@@ -34,6 +34,34 @@ let package = Package(
                 "NBPhoneNumberParsingPerfTest.m",
                 "NBPhoneNumberUtilTest.m"
             ]
+        ),
+        .target(
+            name: "libPhoneNumberGeocoding",
+            dependencies: ["libPhoneNumber"],
+            path: "libPhoneNumberGeocoding"
+        ),
+        .testTarget(
+            name: "libPhoneNumberGeocodingTests",
+            dependencies: ["libPhoneNumberGeocoding"],
+            path: "libPhoneNumberGeocodingTests",
+            sources: [
+                "NBPhoneNumberOfflineGeocoderTest.m"
+            ]
+        ),
+        .target(
+            name: "libPhoneNumberShortNumber",
+            dependencies: ["libPhoneNumber"],
+            path: "libPhoneNumberShortNumber"
+        ),
+        .testTarget(
+            name: "libPhoneNumberShortNumberTests",
+            dependencies: ["libPhoneNumberShortNumber"],
+            path: "libPhoneNumberShortNumberTests",
+            sources: [
+                "NBShortNumberInfoTest.m",
+                "NBShortNumberTestHelper.h",
+                "NBShortNumberTestHelper.m"
+            ]
         )
     ]
 )
