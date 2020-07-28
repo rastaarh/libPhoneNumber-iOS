@@ -48,8 +48,8 @@ let geocodingPackage = Package(
     ],
     products: [
         .library(
-            name: "libPhoneNumberGeocoding",
-            targets: ["libPhoneNumberGeocoding"]
+            name: "libPhoneNumber",
+            targets: ["libPhoneNumber"]
         )
     ],
     targets: [
@@ -78,8 +78,8 @@ let shortNumberPackage = Package(
     ],
     products: [
         .library(
-            name: "libPhoneNumberShortNumber",
-            targets: ["libPhoneNumberShortNumber"]
+            name: "libPhoneNumber",
+            targets: ["libPhoneNumber"]
         )
     ],
     targets: [
