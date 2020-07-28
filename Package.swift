@@ -12,8 +12,8 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "libPhoneNumber",
-            targets: ["libPhoneNumber"]
+            name: "libPhoneNumberiOS",
+            targets: ["libPhoneNumberiOS"]
         )
     ],
     targets: [
