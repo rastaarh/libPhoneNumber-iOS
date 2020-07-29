@@ -2,36 +2,31 @@
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 import PackageDescription
 
+// 3
 let package = Package(
-    name: "libPhoneNumberiOS",
-    platforms: [
+  // 4
+  name: "libPhoneNumberiOS",
+  // 5
+  platforms: [
         .macOS(.v10_10),
         .iOS(.v8),
         .tvOS(.v9),
         .watchOS(.v2)
-    ],
-    products: [
-        .library(
-            name: "libPhoneNumberiOS",
-            targets: ["libPhoneNumberiOS"]
-        )
-    ],
-    targets: [
-        .target(
-            name: "libPhoneNumberiOS",
-            path: "libPhoneNumber"
-        ),
-        .testTarget(
-            name: "libPhoneNumberTests",
-            dependencies: ["libPhoneNumberiOS"],
-            path: "libPhoneNumberTests",
-            sources: [
-                "NBAsYouTypeFormatterTest.m",
-                "NBPhoneNumberParsingPerfTest.m",
-                "NBPhoneNumberUtilTest.m"
-            ]
-        )
-    ]
+  ],
+  // 6
+  products: [
+    .library(name: "libPhoneNumberiOS", targets: ["libPhoneNumberiOS"])
+  ],
+  // 7
+  dependencies: []
+  // 8
+  targets: [
+    .target(name: "libPhoneNumberiOS"),
+    .testTarget(
+      name: "libPhoneNumberiOSTests", 
+      dependencies: ["libPhoneNumberiOS"]
+    )
+  ]
 )
 
 // let geocodingPackage = Package(
