@@ -44,8 +44,8 @@ let geocodingPackage = Package(
     ],
     products: [
         .library(
-            name: "libPhoneNumber",
-            targets: ["libPhoneNumber"]
+            name: "libPhoneNumberiOS",
+            targets: ["libPhoneNumberiOS"]
         )
     ],
     targets: [
@@ -74,8 +74,8 @@ let shortNumberPackage = Package(
     ],
     products: [
         .library(
-            name: "libPhoneNumber",
-            targets: ["libPhoneNumber"]
+            name: "libPhoneNumberiOS",
+            targets: ["libPhoneNumberiOS"]
         )
     ],
     targets: [
