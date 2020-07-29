@@ -28,7 +28,7 @@ let package = Package(
         ),
         .testTarget(
             name: "libPhoneNumberTests",
-            dependencies: [],
+            dependencies: ["libPhoneNumber"],
             path: "libPhoneNumberTests",
             sources: [
                 "NBAsYouTypeFormatterTest.m",
