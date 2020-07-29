@@ -4,29 +4,39 @@ import PackageDescription
 
 // 3
 let package = Package(
-  // 4
-  name: "libPhoneNumberiOS",
-  // 5
-  platforms: [
+    name: "libPhoneNumber",
+    platforms: [
         .macOS(.v10_10),
         .iOS(.v8),
         .tvOS(.v9),
         .watchOS(.v2)
-  ],
-  // 6
-  products: [
-    .library(name: "libPhoneNumberiOS", targets: ["libPhoneNumberiOS"])
-  ],
-  // 7
-  dependencies: [],
-  // 8
-  targets: [
-    .target(name: "libPhoneNumberiOS"),
-    .testTarget(
-      name: "libPhoneNumberiOSTests", 
-      dependencies: ["libPhoneNumberiOS"]
-    )
-  ]
+    ],
+    products: [
+        .library(
+            name: "libPhoneNumber",
+            targets: ["libPhoneNumber"]
+        )
+    ],
+    targets: [
+        .target(
+            name: "libPhoneNumber",
+            path: "libPhoneNumber",
+            publicHeadersPath: ".",
+            cSettings: [
+                .headerSearchPath("Internal")
+            ]
+        ),
+        .testTarget(
+            name: "libPhoneNumberTests",
+            dependencies: ["libPhoneNumber"],
+            path: "libPhoneNumberTests",
+            sources: [
+                "NBAsYouTypeFormatterTest.m",
+                "NBPhoneNumberParsingPerfTest.m",
+                "NBPhoneNumberUtilTest.m"
+            ]
+        )
+    ]
 )
 
 // let geocodingPackage = Package(
