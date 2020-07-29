@@ -18,7 +18,7 @@ let package = Package(
     .library(name: "libPhoneNumberiOS", targets: ["libPhoneNumberiOS"])
   ],
   // 7
-  dependencies: []
+  dependencies: [],
   // 8
   targets: [
     .target(name: "libPhoneNumberiOS"),
