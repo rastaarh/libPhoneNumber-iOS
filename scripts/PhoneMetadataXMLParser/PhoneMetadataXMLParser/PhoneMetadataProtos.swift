@@ -8,17 +8,16 @@
 
 import Foundation
 
-// phonemetadata.proto
 struct NumberFormat {
     var pattern: String!
     var format: String!
-    var leading_digits_pattern: String?
+    var leading_digits_pattern: [String]
     var national_prefix_formatting_rule: String?
     var national_prefix_optional_when_formatting: Bool? = false
     var domestic_carrier_code_formatting_rule: String?
 }
 
-class PhoneNumberDesc {
+struct PhoneNumberDesc {
     var national_number_pattern: String?
     var possible_length: [Int32?] = []
     var possible_length_local_only: [Int32?] = []
@@ -26,23 +25,6 @@ class PhoneNumberDesc {
 }
 
 struct PhoneMetadata {
-    var id: String = "" //
-    var country_code: Int32? //
-    var international_prefix: String? //
-    var preferred_international_prefix: String? //
-    var national_prefix: String? //
-    var preferred_extn_prefix: String? //
-    var national_prefix_for_parsing: String? //
-    var national_prefix_transform_rule: String? //
-    var same_mobile_and_fixed_line_pattern: Bool? = false
-    var number_format: [NumberFormat] = []
-    
-    var intl_number_format: [NumberFormat] = []
-    var main_country_for_code: Bool? = false //
-    var leading_digits: String? //
-    var leading_zero_possible: Bool? = false //
-    var mobile_number_portable_region: Bool? = false //
-    
     var general_desc: PhoneNumberDesc?
     var fixed_line: PhoneNumberDesc?
     var mobile: PhoneNumberDesc?
@@ -60,10 +42,26 @@ struct PhoneMetadata {
     var carrier_specific: PhoneNumberDesc?
     var sms_services: PhoneNumberDesc?
     var no_international_dialling: PhoneNumberDesc?
+    
+    var id: String!
+    var country_code: Int32?
+    var international_prefix: String?
+    var preferred_international_prefix: String?
+    var national_prefix: String?
+    var preferred_extn_prefix: String?
+    var national_prefix_for_parsing: String?
+    var national_prefix_transform_rule: String?
+    var same_mobile_and_fixed_line_pattern: Bool? = false
+    var number_format: [NumberFormat] = []
+    var intl_number_format: [NumberFormat] = []
+    var main_country_for_code: Bool? = false
+    var leading_digits: String?
+    var leading_zero_possible: Bool? = false
+    var mobile_number_portable_region: Bool? = false
 }
 
 struct PhoneMetadataCollection {
-    var metadata: PhoneMetadata
+    var metadata: [PhoneMetadata] = []
 }
 
 // phonenumber.proto

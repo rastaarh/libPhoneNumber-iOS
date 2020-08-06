@@ -15,6 +15,7 @@ class XMLParserClass: NSObject {
     func handleTerritory(territoryElement: XMLElement) {
         var phoneMetadata: PhoneMetadata = PhoneMetadata()
         
+        // Set all possible attributes provided in a territory element.
         if let id = territoryElement.attribute(forName: "id") {
             phoneMetadata.id = (id.objectValue as! String)
         }
@@ -70,6 +71,7 @@ class XMLParserClass: NSObject {
             phoneMetadata.mobile_number_portable_region = (mobileNumberPortableRegion.objectValue as! NSString).boolValue
         }
         
+        // Create PhoneNumberDesc objects to place in territories available.
         if let generalDesc = territoryElement.elements(forName: "generalDesc").first {
             phoneMetadata.general_desc = parsePhoneNumberDesc(phoneNumberDescElement: generalDesc)
         }
@@ -118,30 +120,78 @@ class XMLParserClass: NSObject {
             phoneMetadata.no_international_dialling = parsePhoneNumberDesc(phoneNumberDescElement: noInternationalDialling)
         }
         
-        if let voicemail = territoryElement.elements(forName: "voicemail").first {
-            phoneMetadata.voicemail = parsePhoneNumberDesc(phoneNumberDescElement: voicemail)
+        if let emergency = territoryElement.elements(forName: "emergency").first {
+            phoneMetadata.emergency = parsePhoneNumberDesc(phoneNumberDescElement: emergency)
         }
         
-//        print(phoneMetadata)
+        if let shortCode = territoryElement.elements(forName: "shortCode").first {
+            phoneMetadata.short_code = parsePhoneNumberDesc(phoneNumberDescElement: shortCode)
+        }
         
+        if let standardRate = territoryElement.elements(forName: "standardRate").first {
+            phoneMetadata.standard_rate = parsePhoneNumberDesc(phoneNumberDescElement: standardRate)
+        }
+        
+        if let carrierSpecific = territoryElement.elements(forName: "carrierSpecific").first {
+            phoneMetadata.carrier_specific = parsePhoneNumberDesc(phoneNumberDescElement: carrierSpecific)
+        }
+        
+        if let smsServices = territoryElement.elements(forName: "smsServices").first {
+            phoneMetadata.sms_services = parsePhoneNumberDesc(phoneNumberDescElement: smsServices)
+        }
+        
+        let availableFormat = territoryElement.elements(forName: "availableFormats")
+        if availableFormat.count > 0 {
+            let numberFormats = availableFormat[0].elements(forName: "numberFormat")
+            for numberFormat in numberFormats {
+                let currNumberFormat: NumberFormat = parseNumberFormat(numberFormatElement: numberFormat)
+                phoneMetadata.number_format.append(currNumberFormat)
+                
+                // should only have at most one intlFormat object per numberFormat object
+                let intlFormatElement = numberFormat.elements(forName: "intlFormat")
+                if intlFormatElement.count == 0 {
+                    let intlFormat: NumberFormat = currNumberFormat
+                    phoneMetadata.intl_number_format.append(intlFormat)
+                } else if intlFormatElement[0].objectValue as! String != "NA" {
+                    let intlFormat: NumberFormat = parseNumberFormat(numberFormatElement: intlFormatElement[0])
+                    phoneMetadata.intl_number_format.append(intlFormat)
+                }
+                
+            }
+        }
+        
+        if phoneMetadata.mobile?.national_number_pattern != nil && phoneMetadata.mobile?.national_number_pattern == phoneMetadata.fixed_line?.national_number_pattern {
+            phoneMetadata.same_mobile_and_fixed_line_pattern = true
+        }
     }
     
     func parsePhoneNumberDesc(phoneNumberDescElement: XMLElement) -> PhoneNumberDesc {
-        let phoneNumberDesc: PhoneNumberDesc = PhoneNumberDesc()
+        var phoneNumberDesc: PhoneNumberDesc = PhoneNumberDesc()
         let possibleLengths = phoneNumberDescElement.elements(forName: "possibleLengths")
         for _ in possibleLengths {
+            // For a PhoneNumberDesc Object, we only expect one possibleLengths XML element.
             let length = possibleLengths[0]
+            
+            // EX: national = "6,8"
             if let nationalLength = length.attribute(forName: "national") {
-                phoneNumberDesc.possible_length.append(Int32(nationalLength.objectValue as! String))
-                print("Possible Length: \(phoneNumberDesc.possible_length)")
+                let nationalLengths = (nationalLength.objectValue as! String).split(separator: ",")
+                for individualLength in nationalLengths {
+                    print(individualLength)
+                    phoneNumberDesc.possible_length.append(Int32(individualLength))
+                }
             }
+            // EX: localOnly = "5,6,9"
             if let localOnly = length.attribute(forName: "localOnly") {
-                phoneNumberDesc.possible_length_local_only.append(Int32(localOnly.objectValue as! String))
-                print("Possible local only length: \(phoneNumberDesc.possible_length_local_only)")
+                let localOnlyLengths = (localOnly.objectValue as! String).split(separator: ",")
+                for individualLength in localOnlyLengths {
+                    print(individualLength)
+                    phoneNumberDesc.possible_length_local_only.append(Int32(individualLength))
+                }
             }
         }
         
         let nationalNumberPattern = phoneNumberDescElement.elements(forName: "nationalNumberPattern")
+        // Ensure that a nationalNumberPattern is provided before attempting to extract. 
         if nationalNumberPattern.count > 0 {
             phoneNumberDesc.national_number_pattern = (nationalNumberPattern[0].objectValue as! String)
             print("National number pattern: \(String(describing: phoneNumberDesc.national_number_pattern))")
@@ -152,7 +202,47 @@ class XMLParserClass: NSObject {
             phoneNumberDesc.example_number = (exampleNumber[0].objectValue as! String)
             print("Example Number: \(String(describing: phoneNumberDesc.example_number))")
         }
+        
         return phoneNumberDesc
+    }
+    
+    
+    // phonemetadata.proto
+//    struct NumberFormat {
+//        var pattern: String! //
+//        var format: String!
+//        var leading_digits_pattern: [String] //
+//        var national_prefix_formatting_rule: String? //
+//        var national_prefix_optional_when_formatting: Bool? = false //
+//        var domestic_carrier_code_formatting_rule: String?
+//    }
+    
+    func parseNumberFormat(numberFormatElement: XMLElement) -> NumberFormat {
+        var numberFormat: NumberFormat = NumberFormat(leading_digits_pattern: [])
+        
+        if let pattern = numberFormatElement.attribute(forName: "pattern") {
+            numberFormat.pattern = (pattern.objectValue as! String)
+        }
+        
+        if let nationalPrefixFormattingRule = numberFormatElement.attribute(forName: "nationalPrefixFormattingRule") {
+            numberFormat.national_prefix_formatting_rule = (nationalPrefixFormattingRule.objectValue as! String)
+        }
+        
+        if let nationalPrefixOptionalWhenFormatting = numberFormatElement.attribute(forName: "nationalPrefixOptionalWhenFormatting") {
+            numberFormat.national_prefix_optional_when_formatting = (nationalPrefixOptionalWhenFormatting.objectValue as! NSString).boolValue
+        }
+        
+        let leadingDigitsElements = numberFormatElement.elements(forName: "leadingDigits")
+        for leadingDigitsElement in leadingDigitsElements {
+            numberFormat.leading_digits_pattern.append(leadingDigitsElement.objectValue as! String)
+        }
+        
+        let format = numberFormatElement.elements(forName: "format")
+        if format.count > 0 {
+            numberFormat.format = (format[0].objectValue as! String)
+        }
+                
+        return numberFormat
     }
     
     override init() {
