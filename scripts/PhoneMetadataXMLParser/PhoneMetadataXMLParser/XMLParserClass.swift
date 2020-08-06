@@ -12,7 +12,7 @@ class XMLParserClass: NSObject {
     
     var plist = Dictionary<String, Any>()
     
-    func handleTerritory(territoryElement: XMLElement) {
+    func handleTerritory(territoryElement: XMLElement) -> PhoneMetadata {
         var phoneMetadata: PhoneMetadata = PhoneMetadata()
         
         // Set all possible attributes provided in a territory element.
@@ -163,6 +163,8 @@ class XMLParserClass: NSObject {
         if phoneMetadata.mobile?.national_number_pattern != nil && phoneMetadata.mobile?.national_number_pattern == phoneMetadata.fixed_line?.national_number_pattern {
             phoneMetadata.same_mobile_and_fixed_line_pattern = true
         }
+        
+        return phoneMetadata
     }
     
     func parsePhoneNumberDesc(phoneNumberDescElement: XMLElement) -> PhoneNumberDesc {
@@ -176,7 +178,7 @@ class XMLParserClass: NSObject {
             if let nationalLength = length.attribute(forName: "national") {
                 let nationalLengths = (nationalLength.objectValue as! String).split(separator: ",")
                 for individualLength in nationalLengths {
-                    print(individualLength)
+//                    print(individualLength)
                     phoneNumberDesc.possible_length.append(Int32(individualLength))
                 }
             }
@@ -184,7 +186,7 @@ class XMLParserClass: NSObject {
             if let localOnly = length.attribute(forName: "localOnly") {
                 let localOnlyLengths = (localOnly.objectValue as! String).split(separator: ",")
                 for individualLength in localOnlyLengths {
-                    print(individualLength)
+//                    print(individualLength)
                     phoneNumberDesc.possible_length_local_only.append(Int32(individualLength))
                 }
             }
@@ -194,29 +196,18 @@ class XMLParserClass: NSObject {
         // Ensure that a nationalNumberPattern is provided before attempting to extract. 
         if nationalNumberPattern.count > 0 {
             phoneNumberDesc.national_number_pattern = (nationalNumberPattern[0].objectValue as! String)
-            print("National number pattern: \(String(describing: phoneNumberDesc.national_number_pattern))")
+//            print("National number pattern: \(String(describing: phoneNumberDesc.national_number_pattern))")
         }
         
         let exampleNumber = phoneNumberDescElement.elements(forName: "exampleNumber")
         if exampleNumber.count > 0 {
             phoneNumberDesc.example_number = (exampleNumber[0].objectValue as! String)
-            print("Example Number: \(String(describing: phoneNumberDesc.example_number))")
+//            print("Example Number: \(String(describing: phoneNumberDesc.example_number))")
         }
         
         return phoneNumberDesc
     }
-    
-    
-    // phonemetadata.proto
-//    struct NumberFormat {
-//        var pattern: String! //
-//        var format: String!
-//        var leading_digits_pattern: [String] //
-//        var national_prefix_formatting_rule: String? //
-//        var national_prefix_optional_when_formatting: Bool? = false //
-//        var domestic_carrier_code_formatting_rule: String?
-//    }
-    
+
     func parseNumberFormat(numberFormatElement: XMLElement) -> NumberFormat {
         var numberFormat: NumberFormat = NumberFormat(leading_digits_pattern: [])
         
@@ -256,19 +247,18 @@ class XMLParserClass: NSObject {
         let baseURL = URL(fileURLWithPath: currentDir).appendingPathComponent("generatedJSON")
         try? FileManager.default.createDirectory(at: baseURL, withIntermediateDirectories: true)
 
-        // Phone metadata
         do {
             let metadata = try synchronouslyFetchMetadata(from: phoneMetadata)
             // Parse the file into XML Document using DOM
             let parser = try XMLDocument(data: metadata, options: [])
             let rootElement = parser.rootElement()
+            var phoneMetadataCollection: PhoneMetadataCollection = PhoneMetadataCollection()
             
             // This stores all of the <territory> elements in file
             let territoriesElement = rootElement?.elements(forName: "territories")[0]
             for element in territoriesElement!.elements(forName: "territory") {
-                handleTerritory(territoryElement: element)
+                phoneMetadataCollection.metadata.append(handleTerritory(territoryElement: element))
             }
-            
         } catch {
             print("Error reached")
         }

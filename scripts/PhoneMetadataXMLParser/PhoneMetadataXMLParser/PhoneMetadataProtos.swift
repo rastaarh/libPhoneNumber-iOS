@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct NumberFormat {
+struct NumberFormat: Codable {
     var pattern: String!
     var format: String!
     var leading_digits_pattern: [String]
@@ -17,14 +17,14 @@ struct NumberFormat {
     var domestic_carrier_code_formatting_rule: String?
 }
 
-struct PhoneNumberDesc {
+struct PhoneNumberDesc: Codable {
     var national_number_pattern: String?
     var possible_length: [Int32?] = []
     var possible_length_local_only: [Int32?] = []
     var example_number: String?
 }
 
-struct PhoneMetadata {
+struct PhoneMetadata: Codable {
     var general_desc: PhoneNumberDesc?
     var fixed_line: PhoneNumberDesc?
     var mobile: PhoneNumberDesc?
@@ -60,11 +60,10 @@ struct PhoneMetadata {
     var mobile_number_portable_region: Bool? = false
 }
 
-struct PhoneMetadataCollection {
+struct PhoneMetadataCollection: Codable {
     var metadata: [PhoneMetadata] = []
 }
 
-// phonenumber.proto
 struct PhoneNumber {
     var country_code: Int32!
     var national_number: UInt64!
@@ -81,5 +80,6 @@ struct PhoneNumber {
         case FROM_DEFAULT_COUNTRY
     }
     
+    var country_code_source: CountryCodeSource?
     var preferred_domestic_carrier_code: String?
 }
