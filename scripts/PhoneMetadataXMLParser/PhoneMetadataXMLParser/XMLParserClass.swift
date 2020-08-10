@@ -10,10 +10,13 @@ import Foundation
 
 class XMLParserClass: NSObject {
     
+    
+    
+    
     var plist = Dictionary<String, Any>()
     
     func handleTerritory(territoryElement: XMLElement) -> PhoneMetadata {
-        var phoneMetadata: PhoneMetadata = PhoneMetadata()
+        let phoneMetadata: PhoneMetadata = PhoneMetadata()
         
         // Set all possible attributes provided in a territory element.
         if let id = territoryElement.attribute(forName: "id") {
@@ -168,7 +171,7 @@ class XMLParserClass: NSObject {
     }
     
     func parsePhoneNumberDesc(phoneNumberDescElement: XMLElement) -> PhoneNumberDesc {
-        var phoneNumberDesc: PhoneNumberDesc = PhoneNumberDesc()
+        let phoneNumberDesc: PhoneNumberDesc = PhoneNumberDesc()
         let possibleLengths = phoneNumberDescElement.elements(forName: "possibleLengths")
         for _ in possibleLengths {
             // For a PhoneNumberDesc Object, we only expect one possibleLengths XML element.
@@ -206,7 +209,7 @@ class XMLParserClass: NSObject {
     }
 
     func parseNumberFormat(numberFormatElement: XMLElement) -> NumberFormat {
-        var numberFormat: NumberFormat = NumberFormat(leadingDigitsPattern: [])
+        let numberFormat: NumberFormat = NumberFormat()
         
         if let pattern = numberFormatElement.attribute(forName: "pattern") {
             numberFormat.pattern = (pattern.objectValue as! String)
@@ -233,6 +236,11 @@ class XMLParserClass: NSObject {
         return numberFormat
     }
     
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
+    }
+    
     override init() {
         super.init()
         // Load metadata file from GitHub.
@@ -243,35 +251,31 @@ class XMLParserClass: NSObject {
         let currentDir = FileManager.default.currentDirectoryPath
         let baseURL = URL(fileURLWithPath: currentDir).appendingPathComponent("generatedJSON")
         try? FileManager.default.createDirectory(at: baseURL, withIntermediateDirectories: true)
-
         do {
             let metadata = try synchronouslyFetchMetadata(from: phoneMetadata)
             // Parse the file into XML Document using DOM
             let parser = try XMLDocument(data: metadata, options: [])
             let rootElement = parser.rootElement()
-            var phoneMetadataCollection: PhoneMetadataCollection = PhoneMetadataCollection()
+            let phoneMetadataCollection: PhoneMetadataCollection = PhoneMetadataCollection()
             
             // This stores all of the <territory> elements in file
             let territoriesElement = rootElement?.elements(forName: "territories")[0]
             for element in territoriesElement!.elements(forName: "territory") {
                 phoneMetadataCollection.metadata.append(handleTerritory(territoryElement: element))
             }
-            
+            print(getDocumentsDirectory().appendingPathComponent("example.plist"))
 //            let encoder = JSONEncoder()
 //            let data = try encoder.encode(phoneMetadataCollection)
 //            try data.write(to: URL(fileURLWithPath: "/Users/rastaar/Desktop/metadata.json"))
-            let fileManager = FileManager.default
-            let documentDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
-            let path = documentDirectory.appending("/example.plist")
-            if (!fileManager.fileExists(atPath: path)) {
-                let plistEncoder = PropertyListEncoder()
-                let data = try plistEncoder.encode(phoneMetadataCollection)
-                try data.write(to: URL(fileURLWithPath: path))
-            } else {
-                print("File already exists")
-            }
+            let path = getDocumentsDirectory().appendingPathComponent("example.plist")
+//                let plistEncoder = PropertyListEncoder()
+//                let data = try plistEncoder.encode(phoneMetadataCollection.metadata)
+            let data = try NSKeyedArchiver.archivedData(withRootObject: phoneMetadataCollection.metadata, requiringSecureCoding: false)
+            print(data)
+            print("HERE")
+            try data.write(to: path)
         } catch {
-            print("Error reached")
+            print(error)
         }
     }
 }

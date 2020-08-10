@@ -6,14 +6,6 @@
 //  Copyright © 2020 Google LLC. All rights reserved.
 //
 
-//
-//  metadataGenerator.swift
-//  libPhoneNumber-iOS
-//
-//  Created by Paween Itthipalkul on 2/16/18.
-//  Copyright © 2018 Google LLC. All rights reserved.
-//
-
 import Foundation
 
 enum GeneratorError: Error {
@@ -45,27 +37,5 @@ func synchronouslyFetchMetadata(from url: URL) throws -> Data {
   }
   throw GeneratorError.genericError
 }
-
-struct Stack {
-    private var elements: [NSObject] = []
-    
-    func top() -> NSObject {
-        guard let top = elements.first else { fatalError("This stack is empty")}
-        return top
-    }
-    
-    mutating func pop() {
-        elements.removeFirst()
-        print("Updated stack size: \(elements.count)")
-    }
-    
-    mutating func push(_ element: NSObject) {
-        elements.insert(element, at: 0)
-        print("Updated stack size: \(elements.count)")
-    }
-}
-
-//var phoneNumberDesc: PhoneNumberDesc?
-//var stack = Stack()
 
 let xmlParser = XMLParserClass()

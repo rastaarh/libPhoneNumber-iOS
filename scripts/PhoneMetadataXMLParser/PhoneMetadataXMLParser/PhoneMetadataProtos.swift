@@ -11,7 +11,29 @@
 
 import Foundation
 
-struct NumberFormat: Codable {
+class NumberFormat: NSObject, NSCoding, Codable {
+    func encode(with coder: NSCoder) {
+        self.pattern = (coder.decodeObject(forKey: "pattern") as! String)
+        self.format = (coder.decodeObject(forKey: "format") as! String)
+        self.leadingDigitsPattern = coder.decodeObject(forKey: "leadingDigitsPattern") as! Array<String>
+        self.nationalPrefixFormattingRule = coder.decodeObject(forKey: "nationalPrefixFormattingRule") as? String
+        self.nationalPrefixOptionalWhenFormatting = coder.decodeObject(forKey: "nationalPrefixOptionalWhenFormatting") as? Bool
+        self.domesticCarrierCodeFormattingRule = coder.decodeObject(forKey: "domesticCarrierCodeFormattingRule") as? String
+    }
+    
+    required init?(coder: NSCoder) {
+        self.pattern = (coder.decodeObject(forKey: "pattern") as! String)
+        self.format = (coder.decodeObject(forKey: "format") as! String)
+        self.leadingDigitsPattern = coder.decodeObject(forKey: "leadingDigitsPattern") as! Array<String>
+        self.nationalPrefixFormattingRule = coder.decodeObject(forKey: "nationalPrefixFormattingRule") as? String
+        self.nationalPrefixOptionalWhenFormatting = coder.decodeObject(forKey: "nationalPrefixOptionalWhenFormatting") as? Bool
+        self.domesticCarrierCodeFormattingRule = coder.decodeObject(forKey: "domesticCarrierCodeFormattingRule") as? String
+    }
+    
+    override init() {
+        self.leadingDigitsPattern = []
+    }
+    
     var pattern: String!
     var format: String!
     var leadingDigitsPattern: [String]
@@ -20,14 +42,108 @@ struct NumberFormat: Codable {
     var domesticCarrierCodeFormattingRule: String?
 }
 
-struct PhoneNumberDesc: Codable {
+class PhoneNumberDesc: NSObject, NSCoding, Codable {
+    func encode(with coder: NSCoder) {
+        self.nationalNumberPattern = (coder.decodeObject(forKey: "nationalNumberPattern") as? String)
+        self.possibleLength = (coder.decodeObject(forKey: "possibleLength") as! [Int32?])
+        self.possibleLengthLocalOnly = (coder.decodeObject(forKey: "possibleLengthLocalOnly") as! [Int32?])
+        self.exampleNumber = (coder.decodeObject(forKey: "exampleNumber") as? String)
+    }
+    
+    required init?(coder: NSCoder) {
+        self.nationalNumberPattern = (coder.decodeObject(forKey: "nationalNumberPattern") as? String)
+        self.possibleLength = (coder.decodeObject(forKey: "possibleLength") as! [Int32?])
+        self.possibleLengthLocalOnly = (coder.decodeObject(forKey: "possibleLengthLocalOnly") as! [Int32?])
+        self.exampleNumber = (coder.decodeObject(forKey: "exampleNumber") as? String)
+    }
+    
+    override init() {
+        
+    }
+    
     var nationalNumberPattern: String?
     var possibleLength: [Int32?] = []
     var possibleLengthLocalOnly: [Int32?] = []
     var exampleNumber: String?
 }
 
-struct PhoneMetadata: Codable {
+class PhoneMetadata: NSObject, NSCoding, Codable {
+    func encode(with coder: NSCoder) {
+        generalDesc = (coder.decodeObject(forKey: "generalDesc") as? PhoneNumberDesc)
+        fixedLine = (coder.decodeObject(forKey: "fixedLine") as? PhoneNumberDesc)
+        mobile = (coder.decodeObject(forKey: "mobile") as? PhoneNumberDesc)
+        tollFree = (coder.decodeObject(forKey: "tollFree") as? PhoneNumberDesc)
+        premiumRate = (coder.decodeObject(forKey: "premiumRate") as? PhoneNumberDesc)
+        sharedCost = (coder.decodeObject(forKey: "sharedCost") as? PhoneNumberDesc)
+        personalNumber = (coder.decodeObject(forKey: "personalNumber") as? PhoneNumberDesc)
+        voip = (coder.decodeObject(forKey: "voip") as? PhoneNumberDesc)
+        pager = (coder.decodeObject(forKey: "pager") as? PhoneNumberDesc)
+        uan = (coder.decodeObject(forKey: "uan") as? PhoneNumberDesc)
+        emergency = (coder.decodeObject(forKey: "emergency") as? PhoneNumberDesc)
+        voicemail = (coder.decodeObject(forKey: "voicemail") as? PhoneNumberDesc)
+        shortCode = (coder.decodeObject(forKey: "shortCode") as? PhoneNumberDesc)
+        standardRate = (coder.decodeObject(forKey: "standardRate") as? PhoneNumberDesc)
+        carrierSpecific = (coder.decodeObject(forKey: "carrierSpecific") as? PhoneNumberDesc)
+        smsServices = (coder.decodeObject(forKey: "smsServices") as? PhoneNumberDesc)
+        noInternationalDialling = (coder.decodeObject(forKey: "noInternationalDialling") as? PhoneNumberDesc)
+
+        codeID = (coder.decodeObject(forKey: "codeID") as! String)
+        countryCode = (coder.decodeObject(forKey: "countryCode") as? Int32)
+        internationalPrefix = (coder.decodeObject(forKey: "internationPrefix") as? String)
+        preferredInternationalPrefix = (coder.decodeObject(forKey: "preferredInternationalPrefix") as? String)
+        nationalPrefix = (coder.decodeObject(forKey: "nationalPrefix") as? String)
+        preferredExtnPrefix = (coder.decodeObject(forKey: "preferredExtnPrefix") as? String)
+        nationalPrefixForParsing = (coder.decodeObject(forKey: "nationalPrefixForParsing") as? String)
+        nationalPrefixTransformRule = (coder.decodeObject(forKey: "nationalPrefixTransformRule") as? String)
+        sameMobileAndFixedLinePattern = (coder.decodeObject(forKey: "sameMobileAndFixedLinePattern") as? Bool)
+        numberFormats = (coder.decodeObject(forKey: "numberFormats") as! [NumberFormat])
+        intlNumberFormats = (coder.decodeObject(forKey: "intlNumberFormats") as! [NumberFormat])
+        mainCountryForCode = (coder.decodeObject(forKey: "mainCountryForCode") as? Bool)
+        leadingDigits = (coder.decodeObject(forKey: "leadingDigits") as? String)
+        leadingZeroPossible = (coder.decodeObject(forKey: "leadingZeroPossible") as? Bool)
+        mobileNumberPortableRegion = (coder.decodeObject(forKey: "mobileNumberPortableRegion") as? Bool)
+    }
+    
+    required init?(coder: NSCoder) {
+        generalDesc = (coder.decodeObject(forKey: "generalDesc") as? PhoneNumberDesc)
+        fixedLine = (coder.decodeObject(forKey: "fixedLine") as? PhoneNumberDesc)
+        mobile = (coder.decodeObject(forKey: "mobile") as? PhoneNumberDesc)
+        tollFree = (coder.decodeObject(forKey: "tollFree") as? PhoneNumberDesc)
+        premiumRate = (coder.decodeObject(forKey: "premiumRate") as? PhoneNumberDesc)
+        sharedCost = (coder.decodeObject(forKey: "sharedCost") as? PhoneNumberDesc)
+        personalNumber = (coder.decodeObject(forKey: "personalNumber") as? PhoneNumberDesc)
+        voip = (coder.decodeObject(forKey: "voip") as? PhoneNumberDesc)
+        pager = (coder.decodeObject(forKey: "pager") as? PhoneNumberDesc)
+        uan = (coder.decodeObject(forKey: "uan") as? PhoneNumberDesc)
+        emergency = (coder.decodeObject(forKey: "emergency") as? PhoneNumberDesc)
+        voicemail = (coder.decodeObject(forKey: "voicemail") as? PhoneNumberDesc)
+        shortCode = (coder.decodeObject(forKey: "shortCode") as? PhoneNumberDesc)
+        standardRate = (coder.decodeObject(forKey: "standardRate") as? PhoneNumberDesc)
+        carrierSpecific = (coder.decodeObject(forKey: "carrierSpecific") as? PhoneNumberDesc)
+        smsServices = (coder.decodeObject(forKey: "smsServices") as? PhoneNumberDesc)
+        noInternationalDialling = (coder.decodeObject(forKey: "noInternationalDialling") as? PhoneNumberDesc)
+
+        codeID = (coder.decodeObject(forKey: "codeID") as! String)
+        countryCode = (coder.decodeObject(forKey: "countryCode") as? Int32)
+        internationalPrefix = (coder.decodeObject(forKey: "internationPrefix") as? String)
+        preferredInternationalPrefix = (coder.decodeObject(forKey: "preferredInternationalPrefix") as? String)
+        nationalPrefix = (coder.decodeObject(forKey: "nationalPrefix") as? String)
+        preferredExtnPrefix = (coder.decodeObject(forKey: "preferredExtnPrefix") as? String)
+        nationalPrefixForParsing = (coder.decodeObject(forKey: "nationalPrefixForParsing") as? String)
+        nationalPrefixTransformRule = (coder.decodeObject(forKey: "nationalPrefixTransformRule") as? String)
+        sameMobileAndFixedLinePattern = (coder.decodeObject(forKey: "sameMobileAndFixedLinePattern") as? Bool)
+        numberFormats = (coder.decodeObject(forKey: "numberFormats") as! [NumberFormat])
+        intlNumberFormats = (coder.decodeObject(forKey: "intlNumberFormats") as! [NumberFormat])
+        mainCountryForCode = (coder.decodeObject(forKey: "mainCountryForCode") as? Bool)
+        leadingDigits = (coder.decodeObject(forKey: "leadingDigits") as? String)
+        leadingZeroPossible = (coder.decodeObject(forKey: "leadingZeroPossible") as? Bool)
+        mobileNumberPortableRegion = (coder.decodeObject(forKey: "mobileNumberPortableRegion") as? Bool)
+    }
+    
+    override init() {
+        codeID = ""
+    }
+    
     var generalDesc: PhoneNumberDesc?
     var fixedLine: PhoneNumberDesc?
     var mobile: PhoneNumberDesc?
@@ -63,8 +179,21 @@ struct PhoneMetadata: Codable {
     var mobileNumberPortableRegion: Bool? = false
 }
 
-struct PhoneMetadataCollection: Codable {
-    var metadata: [PhoneMetadata] = []
+class PhoneMetadataCollection: NSObject, NSCoding, Codable {
+    func encode(with coder: NSCoder) {
+        metadata = (coder.decodeObject(forKey: "metadata") as! [PhoneMetadata])
+    }
+    
+    required init?(coder: NSCoder) {
+        metadata = (coder.decodeObject(forKey: "metadata") as! [PhoneMetadata])
+    }
+    
+    override init() {
+        metadata = []
+    }
+    
+    var metadata: [PhoneMetadata]
+
 }
 
 struct PhoneNumber {

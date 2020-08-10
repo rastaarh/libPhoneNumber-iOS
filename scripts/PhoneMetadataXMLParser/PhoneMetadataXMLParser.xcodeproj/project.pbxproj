@@ -10,6 +10,7 @@
 		94E6B76E24DB2BB7001D2824 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94E6B76D24DB2BB7001D2824 /* main.swift */; };
 		94E6B77524DB8732001D2824 /* PhoneMetadataProtos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94E6B77424DB8732001D2824 /* PhoneMetadataProtos.swift */; };
 		94E6B77724DB8798001D2824 /* XMLParserClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94E6B77624DB8798001D2824 /* XMLParserClass.swift */; };
+		E31F36265EBD1F6FCB515EFE /* Pods_PhoneMetadataXMLParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B74FB3EC837055EA07D71E2A /* Pods_PhoneMetadataXMLParser.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,10 +26,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		81E1B126316A821BA5891339 /* Pods-PhoneMetadataXMLParser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhoneMetadataXMLParser.release.xcconfig"; path = "Target Support Files/Pods-PhoneMetadataXMLParser/Pods-PhoneMetadataXMLParser.release.xcconfig"; sourceTree = "<group>"; };
+		9494E6F524DE173600FABF26 /* libPhoneNumber_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = libPhoneNumber_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		94E6B76A24DB2BB7001D2824 /* PhoneMetadataXMLParser */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PhoneMetadataXMLParser; sourceTree = BUILT_PRODUCTS_DIR; };
 		94E6B76D24DB2BB7001D2824 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		94E6B77424DB8732001D2824 /* PhoneMetadataProtos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneMetadataProtos.swift; sourceTree = "<group>"; };
 		94E6B77624DB8798001D2824 /* XMLParserClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMLParserClass.swift; sourceTree = "<group>"; };
+		97EB130ACE94C124E1217BFF /* Pods-PhoneMetadataXMLParser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhoneMetadataXMLParser.debug.xcconfig"; path = "Target Support Files/Pods-PhoneMetadataXMLParser/Pods-PhoneMetadataXMLParser.debug.xcconfig"; sourceTree = "<group>"; };
+		B74FB3EC837055EA07D71E2A /* Pods_PhoneMetadataXMLParser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PhoneMetadataXMLParser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,17 +41,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E31F36265EBD1F6FCB515EFE /* Pods_PhoneMetadataXMLParser.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8EE6E9D37C35AA21AE4B3648 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				97EB130ACE94C124E1217BFF /* Pods-PhoneMetadataXMLParser.debug.xcconfig */,
+				81E1B126316A821BA5891339 /* Pods-PhoneMetadataXMLParser.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		94E6B76124DB2BB7001D2824 = {
 			isa = PBXGroup;
 			children = (
 				94E6B76C24DB2BB7001D2824 /* PhoneMetadataXMLParser */,
 				94E6B76B24DB2BB7001D2824 /* Products */,
+				8EE6E9D37C35AA21AE4B3648 /* Pods */,
+				DE94F66FA1FC04BDD02EA0E1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -68,6 +85,15 @@
 			path = PhoneMetadataXMLParser;
 			sourceTree = "<group>";
 		};
+		DE94F66FA1FC04BDD02EA0E1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9494E6F524DE173600FABF26 /* libPhoneNumber_iOS.framework */,
+				B74FB3EC837055EA07D71E2A /* Pods_PhoneMetadataXMLParser.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -75,6 +101,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 94E6B77124DB2BB7001D2824 /* Build configuration list for PBXNativeTarget "PhoneMetadataXMLParser" */;
 			buildPhases = (
+				0BDE8F62A6267332038CE951 /* [CP] Check Pods Manifest.lock */,
 				94E6B76624DB2BB7001D2824 /* Sources */,
 				94E6B76724DB2BB7001D2824 /* Frameworks */,
 				94E6B76824DB2BB7001D2824 /* CopyFiles */,
@@ -120,6 +147,31 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0BDE8F62A6267332038CE951 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PhoneMetadataXMLParser-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		94E6B76624DB2BB7001D2824 /* Sources */ = {
@@ -250,6 +302,7 @@
 		};
 		94E6B77224DB2BB7001D2824 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 97EB130ACE94C124E1217BFF /* Pods-PhoneMetadataXMLParser.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 973LHT5R86;
@@ -261,6 +314,7 @@
 		};
 		94E6B77324DB2BB7001D2824 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 81E1B126316A821BA5891339 /* Pods-PhoneMetadataXMLParser.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 973LHT5R86;
