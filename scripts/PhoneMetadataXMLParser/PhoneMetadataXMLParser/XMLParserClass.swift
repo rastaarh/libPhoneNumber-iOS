@@ -11,8 +11,6 @@ import Foundation
 class XMLParserClass: NSObject {
     
     
-    
-    
     var plist = Dictionary<String, Any>()
     
     func handleTerritory(territoryElement: XMLElement) -> PhoneMetadata {
