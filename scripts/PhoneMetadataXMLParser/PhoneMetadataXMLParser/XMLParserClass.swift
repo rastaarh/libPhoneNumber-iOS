@@ -20,54 +20,38 @@ class XMLParserClass: NSObject {
         if let id = territoryElement.attribute(forName: "id") {
             phoneMetadata.codeID = (id.objectValue as! String)
         }
-        // countryCode Int32?
         if let countryCode = territoryElement.attribute(forName: "countryCode") {
             if let countryCodeInt = Int32(countryCode.objectValue as! String) {
                 phoneMetadata.countryCode = countryCodeInt
             }
         }
-        // internationalPrefix: String?
         if let internationalPrefix = territoryElement.attribute(forName: "internationalPrefix") {
             phoneMetadata.internationalPrefix = (internationalPrefix.objectValue as! String)
         }
-        
-        // preferredInternationalPrefix: String?
         if let preferredInternationalPrefix = territoryElement.attribute(forName: "preferredInternationalPrefix") {
             phoneMetadata.preferredInternationalPrefix = (preferredInternationalPrefix.objectValue as! String)
         }
-        // nationalPrefix: String?
         if let nationalPrefix = territoryElement.attribute(forName: "nationalPrefix") {
             phoneMetadata.nationalPrefix = (nationalPrefix.objectValue as! String)
         }
-        // preferredExtnPrefix: String?
         if let preferredExtnPrefix = territoryElement.attribute(forName: "preferredExtnPrefix") {
             phoneMetadata.preferredExtnPrefix = (preferredExtnPrefix.objectValue as! String)
         }
-        
-        // nationalPrefixForParsing: String?
         if let nationalPrefixForParsing = territoryElement.attribute(forName: "nationalPrefixForParsing") {
             phoneMetadata.nationalPrefixForParsing = (nationalPrefixForParsing.objectValue as! String)
         }
-        
-        // nationalPrefixTransformRule: String?
         if let nationalPrefixTransformRule = territoryElement.attribute(forName: "nationalPrefixTransformRule") {
             phoneMetadata.nationalPrefixTransformRule = (nationalPrefixTransformRule.objectValue as! String)
         }
-        
-        // mainCountryForCode: Bool?
         if let mainCountryForCode = territoryElement.attribute(forName: "mainCountryForCode") {
             phoneMetadata.mainCountryForCode = (mainCountryForCode.objectValue as! NSString).boolValue
         }
-        
-        // leadingDigits: String?
         if let leadingDigits = territoryElement.attribute(forName: "leadingDigits") {
             phoneMetadata.leadingDigits = (leadingDigits.objectValue as! String)
         }
-        
         if let leadingZeroPossible = territoryElement.attribute(forName: "leadingZeroPossible") {
             phoneMetadata.leadingZeroPossible = (leadingZeroPossible.objectValue as! NSString).boolValue
         }
-        
         if let mobileNumberPortableRegion = territoryElement.attribute(forName: "mobileNumberPortableRegion") {
             phoneMetadata.mobileNumberPortableRegion = (mobileNumberPortableRegion.objectValue as! NSString).boolValue
         }
@@ -157,14 +141,12 @@ class XMLParserClass: NSObject {
                     let intlFormat: NumberFormat = parseNumberFormat(numberFormatElement: intlFormatElement[0])
                     phoneMetadata.intlNumberFormats.append(intlFormat)
                 }
-                
             }
         }
         
         if phoneMetadata.mobile?.nationalNumberPattern != nil && phoneMetadata.mobile?.nationalNumberPattern == phoneMetadata.fixedLine?.nationalNumberPattern {
             phoneMetadata.sameMobileAndFixedLinePattern = true
         }
-        
         return phoneMetadata
     }
     
@@ -174,25 +156,22 @@ class XMLParserClass: NSObject {
         for _ in possibleLengths {
             // For a PhoneNumberDesc Object, we only expect one possibleLengths XML element.
             let length = possibleLengths[0]
-            
-            // EX: national = "6,8"
             if let nationalLength = length.attribute(forName: "national") {
                 let nationalLengths = (nationalLength.objectValue as! String).split(separator: ",")
                 for individualLength in nationalLengths {
                     phoneNumberDesc.possibleLength.append(Int32(individualLength))
                 }
             }
-            // EX: localOnly = "5,6,9"
             if let localOnly = length.attribute(forName: "localOnly") {
                 let localOnlyLengths = (localOnly.objectValue as! String).split(separator: ",")
                 for individualLength in localOnlyLengths {
-//                    print(individualLength)
                     phoneNumberDesc.possibleLengthLocalOnly.append(Int32(individualLength))
                 }
             }
         }
         
         let nationalNumberPattern = phoneNumberDescElement.elements(forName: "nationalNumberPattern")
+        
         // Ensure that a nationalNumberPattern is provided before attempting to extract. 
         if nationalNumberPattern.count > 0 {
             phoneNumberDesc.nationalNumberPattern = (nationalNumberPattern[0].objectValue as! String).replacingOccurrences(of: " ", with: "")
@@ -202,7 +181,6 @@ class XMLParserClass: NSObject {
         if exampleNumber.count > 0 {
             phoneNumberDesc.exampleNumber = (exampleNumber[0].objectValue as! String)
         }
-        
         return phoneNumberDesc
     }
 
@@ -261,17 +239,21 @@ class XMLParserClass: NSObject {
             for element in territoriesElement!.elements(forName: "territory") {
                 phoneMetadataCollection.metadata.append(handleTerritory(territoryElement: element))
             }
-            print(getDocumentsDirectory().appendingPathComponent("example.plist"))
-//            let encoder = JSONEncoder()
-//            let data = try encoder.encode(phoneMetadataCollection)
-//            try data.write(to: URL(fileURLWithPath: "/Users/rastaar/Desktop/metadata.json"))
             let path = getDocumentsDirectory().appendingPathComponent("example.plist")
-//                let plistEncoder = PropertyListEncoder()
-//                let data = try plistEncoder.encode(phoneMetadataCollection.metadata)
+            print(path)
+            // Attempt to write data to file location.
             let data = try NSKeyedArchiver.archivedData(withRootObject: phoneMetadataCollection.metadata, requiringSecureCoding: false)
-            print(data)
-            print("HERE")
             try data.write(to: path)
+            print(data)
+//            do {
+//                if let phoneMetadataArr = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [PhoneMetadata] {
+//                    for phoneMetadata in phoneMetadataArr {
+//                        print(phoneMetadata)
+//                    }
+//                }
+//            } catch {
+//                print("Couldn't read file.")
+//            }
         } catch {
             print(error)
         }
