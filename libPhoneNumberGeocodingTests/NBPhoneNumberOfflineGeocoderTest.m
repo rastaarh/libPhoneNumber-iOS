@@ -389,4 +389,31 @@
                         [self.geocoder descriptionForNumber:self.koreanMobilePhoneNumber]);
 }
 
+- (void)testPerformanceOverAHundredCalls {
+  [self measureBlock:^{
+    for (int i = 0; i < 100; i++) {
+      [self.geocoder descriptionForNumber:self.unitedStatesPhoneNumber3 withLanguageCode:@"en"];
+    }
+  }];
+}
+
+- (void)testPerformanceSwappingLanguages {
+  NSBundle *bundle = [NSBundle bundleForClass:self.classForCoder];
+  NSURL *resourceURL = [[bundle resourceURL] URLByAppendingPathComponent:@"TestingSource.bundle"];
+  NSBundle *testDatabaseBundle = [NSBundle bundleWithURL:resourceURL];
+  [self measureBlock:^{
+    for (int i = 0; i < 100; i++) {
+      self.geocoder = [[NBPhoneNumberOfflineGeocoder alloc]
+          initWithMetadataHelperFactory:^NBGeocoderMetadataHelper *(NSNumber *_Nonnull countryCode,
+                                                                    NSString *_Nonnull language) {
+            return [[NBGeocoderMetadataHelper alloc] initWithCountryCode:countryCode
+                                                            withLanguage:language
+                                                              withBundle:testDatabaseBundle];
+          }];
+      [self.geocoder descriptionForNumber:self.unitedStatesPhoneNumber3 withLanguageCode:@"en"];
+      [self.geocoder descriptionForNumber:self.koreanPhoneNumber2 withLanguageCode:@"ko"];
+    }
+  }];
+}
+
 @end
