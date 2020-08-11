@@ -6,9 +6,7 @@
 //  Copyright © 2020 Google LLC. All rights reserved.
 //
 
-// class, NSCoder protocol
-// use nskeyedarchiver
-
+// mark classes
 import Foundation
 
 class NumberFormat: NSObject, NSCoding, Codable {
@@ -22,6 +20,10 @@ class NumberFormat: NSObject, NSCoding, Codable {
     }
     
     required init?(coder: NSCoder) {
+        if(coder.decodeObject(forKey: "pattern") == nil) {
+            print("Pattern was nil")
+            
+        }
         self.pattern = (coder.decodeObject(forKey: "pattern") as! String)
         self.format = (coder.decodeObject(forKey: "format") as! String)
         self.leadingDigitsPattern = coder.decodeObject(forKey: "leadingDigitsPattern") as! Array<String>

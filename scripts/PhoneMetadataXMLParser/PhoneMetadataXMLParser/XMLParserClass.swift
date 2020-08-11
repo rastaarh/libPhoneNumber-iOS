@@ -9,8 +9,6 @@
 import Foundation
 
 class XMLParserClass: NSObject {
-    
-    
     var plist = Dictionary<String, Any>()
     
     func handleTerritory(territoryElement: XMLElement) -> PhoneMetadata {
@@ -237,14 +235,22 @@ class XMLParserClass: NSObject {
             // This stores all of the <territory> elements in file
             let territoriesElement = rootElement?.elements(forName: "territories")[0]
             for element in territoriesElement!.elements(forName: "territory") {
+//                print(handleTerritory(territoryElement: element).countryCode)
                 phoneMetadataCollection.metadata.append(handleTerritory(territoryElement: element))
             }
+            print("\(phoneMetadataCollection.metadata.count) territories found")
             let path = getDocumentsDirectory().appendingPathComponent("example.plist")
             print(path)
             // Attempt to write data to file location.
             let data = try NSKeyedArchiver.archivedData(withRootObject: phoneMetadataCollection.metadata, requiringSecureCoding: false)
-            try data.write(to: path)
+//            try data.write(to: path)
             print(data)
+            guard let arr = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) else { return }
+            let arrObj: [PhoneMetadata] = arr as! [PhoneMetadata]
+            
+            for obj in arrObj {
+                print(obj)
+            }
 //            do {
 //                if let phoneMetadataArr = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [PhoneMetadata] {
 //                    for phoneMetadata in phoneMetadataArr {
@@ -254,6 +260,21 @@ class XMLParserClass: NSObject {
 //            } catch {
 //                print("Couldn't read file.")
 //            }
+        } catch {
+            print(error)
+        }
+    }
+    
+    func readPList() {
+        do {
+            let path = getDocumentsDirectory().appendingPathComponent("example.plist")
+            let data = FileManager().contents(atPath: path.absoluteString)!
+            guard let arr = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) else { return }
+            var arrObj: [PhoneMetadata] = arr as! [PhoneMetadata]
+            
+            for obj in arrObj {
+                print(obj)
+            }
         } catch {
             print(error)
         }
