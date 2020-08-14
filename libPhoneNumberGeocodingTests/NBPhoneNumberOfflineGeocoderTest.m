@@ -389,4 +389,77 @@
                         [self.geocoder descriptionForNumber:self.koreanMobilePhoneNumber]);
 }
 
+// This test measures the runtime performance of an initial call to NBPhoneNumberOfflineGeocoder.
+- (void)testPerformanceForInitialCall {
+  NSBundle *bundle = [NSBundle bundleForClass:self.classForCoder];
+  NSURL *resourceURL = [[bundle resourceURL] URLByAppendingPathComponent:@"TestingSource.bundle"];
+  NSBundle *testDatabaseBundle = [NSBundle bundleWithURL:resourceURL];
+  [self measureMetrics:[[self class] defaultPerformanceMetrics]
+      automaticallyStartMeasuring:NO
+                         forBlock:^{
+                           self.geocoder = [[NBPhoneNumberOfflineGeocoder alloc]
+                               initWithMetadataHelperFactory:^NBGeocoderMetadataHelper *(
+                                   NSNumber *_Nonnull countryCode, NSString *_Nonnull language) {
+                                 return [[NBGeocoderMetadataHelper alloc]
+                                     initWithCountryCode:countryCode
+                                            withLanguage:language
+                                              withBundle:testDatabaseBundle];
+                               }];
+                           [self startMeasuring];
+                           [self.geocoder descriptionForNumber:self.unitedStatesPhoneNumber3
+                                              withLanguageCode:@"en"];
+                           [self stopMeasuring];
+                         }];
+}
+
+// This test measures the runtime performance when making a geocoding call to a different language.
+- (void)testPerformanceSwappingLanguages {
+  NSBundle *bundle = [NSBundle bundleForClass:self.classForCoder];
+  NSURL *resourceURL = [[bundle resourceURL] URLByAppendingPathComponent:@"TestingSource.bundle"];
+  NSBundle *testDatabaseBundle = [NSBundle bundleWithURL:resourceURL];
+  [self measureMetrics:[[self class] defaultPerformanceMetrics]
+      automaticallyStartMeasuring:NO
+                         forBlock:^{
+                           self.geocoder = [[NBPhoneNumberOfflineGeocoder alloc]
+                               initWithMetadataHelperFactory:^NBGeocoderMetadataHelper *(
+                                   NSNumber *_Nonnull countryCode, NSString *_Nonnull language) {
+                                 return [[NBGeocoderMetadataHelper alloc]
+                                     initWithCountryCode:countryCode
+                                            withLanguage:language
+                                              withBundle:testDatabaseBundle];
+                               }];
+                           [self.geocoder descriptionForNumber:self.unitedStatesPhoneNumber3
+                                              withLanguageCode:@"en"];
+                           [self startMeasuring];
+                           [self.geocoder descriptionForNumber:self.koreanPhoneNumber2
+                                              withLanguageCode:@"ko"];
+                           [self stopMeasuring];
+                         }];
+}
+
+// This test measures the runtime performance when making a geocoding call within the same language.
+- (void)testPerformanceSameLanguage {
+  NSBundle *bundle = [NSBundle bundleForClass:self.classForCoder];
+  NSURL *resourceURL = [[bundle resourceURL] URLByAppendingPathComponent:@"TestingSource.bundle"];
+  NSBundle *testDatabaseBundle = [NSBundle bundleWithURL:resourceURL];
+  [self measureMetrics:[[self class] defaultPerformanceMetrics]
+      automaticallyStartMeasuring:NO
+                         forBlock:^{
+                           self.geocoder = [[NBPhoneNumberOfflineGeocoder alloc]
+                               initWithMetadataHelperFactory:^NBGeocoderMetadataHelper *(
+                                   NSNumber *_Nonnull countryCode, NSString *_Nonnull language) {
+                                 return [[NBGeocoderMetadataHelper alloc]
+                                     initWithCountryCode:countryCode
+                                            withLanguage:language
+                                              withBundle:testDatabaseBundle];
+                               }];
+                           [self.geocoder descriptionForNumber:self.unitedStatesPhoneNumber2
+                                              withLanguageCode:@"en"];
+                           [self startMeasuring];
+                           [self.geocoder descriptionForNumber:self.unitedStatesPhoneNumber3
+                                              withLanguageCode:@"en"];
+                           [self stopMeasuring];
+                         }];
+}
+
 @end
